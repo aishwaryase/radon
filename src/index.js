@@ -1,12 +1,20 @@
 const express = require('express');
 var bodyParser = require('body-parser');
-
 const route = require('./routes/route.js');
+const route1 = require('./routes/test.js');
+// const { default: mongoose } = require('mongoose');
 
 const app = express();
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// mongoose.connect("mongodb+srv://Aishwarya123:sg8eJZVpV9e3eEP3@cluster0.gf2pu4l.mongodb.net/aishu", {
+//     useNewUrlParser: true
+// })
+// .then( () => console.log("MongoDb is connected"))
+// .catch ( err => console.log(err) )
 
 app.use('/', route);
 
@@ -62,3 +70,4 @@ app.get("/sol1", function (req, res) {
 
     res.send(  { Data : missingNumber  }  );
 });
+
