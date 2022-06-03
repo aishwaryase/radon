@@ -4,6 +4,7 @@ const { route } = require('express/lib/application');
 // const myHelper = require('../util/helper')
 // const underscore = require('underscore')
 const lodash = require('lodash')
+const router = express.Router();
 
 
 // ============ Problem-4 =========
@@ -47,7 +48,7 @@ module.exports = router;
 // adding this comment for no reason
 
 
-// const router = express.Router();
+
 
 // router.get('/test-me', function (req, res) {
     
