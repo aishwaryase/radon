@@ -1,5 +1,7 @@
 const { count } = require("console")
 const BookModel= require("../models/bookModel")
+
+
 // ===================== 01 ==========================
 const createBook= async function (req, res) {
     let data= req.body
@@ -26,7 +28,7 @@ module.exports.getBooksInYear = getBooksInYear
 // ===================== 04 ==========================
 const getParticularBooks =async function(req, res){
     let dataParticularBook = req.body
-    let ParticularBooks = await BookModel.find(dataParticularBook).count()
+    let ParticularBooks = await BookModel.find(dataParticularBook)
     res.send({msg: ParticularBooks})
 }
 module.exports.getParticularBooks = getParticularBooks
@@ -41,8 +43,7 @@ module.exports.getXINRBooks = getXINRBooks
 // ===================== 06 ==========================
 const getRandomBooks = async function(req, res){
     let randomBooks = await BookModel.find({
-        $or : [{ stockAvailable: true},{totalpages:{$gt:500}}]
-    })
+        $or: [{ stockAvailable: true},{"totalpages":{$gt:500}}]})
     res.send({msg: randomBooks})
 }
 module.exports.getRandomBooks = getRandomBooks
