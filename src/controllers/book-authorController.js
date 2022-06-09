@@ -58,17 +58,42 @@ module.exports.authorOfBook = authorOfBook
 // and get all the authorName corresponding to the authorId’s ( by querying authorModel)
 
 const getAuthorName= async function (req, res) { 
-    const selected = await BookModel.find({prices:{$gte:50,$lte:100}}).select("author_id")
-    const id = selected.map(input => input.author_id)
+    const bookData = await BookModel.find({prices:{$gte:50,$lte:100}}).select({author_id:1, _id:0})
+    const id = bookData.map(input => input.author_id)
    let arry=[]
    for(let i=0; i<id.length; i++)
    {
        const x = id[i]
-       const author = await AuthorModel.find({author_id : x}).select("author_name")
-       temp.push(author)
+    //    console.log(x)
+    const author  = await AuthorModel.find({author_id : x}).select({author_name:1,author_id:1, _id:0})
+       arry.push(...author)
    }
    const authorName = arry
    res.send({msg:authorName})
 }
 
 module.exports.getAuthorName = getAuthorName
+
+// // =================== [5] ============================
+
+// const getBooksByAuthor = async function (req, res){
+//     let bookDetails = req.params.authorId
+//     let Books = await BookModel.find({author_id: {$eq:id}}).select({name:1, author_id:1, _id:0})
+//     console.log(Books)
+//     res.send({msg : Books})
+// }
+
+// module.exports.getBooksByAuthor = getBooksByAuthor
+
+
+
+
+
+
+// // const authorByAge = async function (req, res){
+// //     let authorDetails = await AuthorModel.find({age : {$gt:50}}).select({author_id:1, author_name:1, age:1, _id:0})
+// //     let details = await BookModel.find({author_id:authorDetails})
+// //     res.send({msg: authorDetails})
+// // }
+// // module.exports.authorByAge = authorByAge
+

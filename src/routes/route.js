@@ -28,4 +28,6 @@ router.post("/createBook1",BookAuthorController.createBook1)
 router.get("/getBooksByChetanBhagat",BookAuthorController.getBooksByChetanBhagat)
 router.get("/authorOfBook",BookAuthorController.authorOfBook)
 router.get("/getAuthorName",BookAuthorController.getAuthorName)
+router.get("/getBooksByAuthor",BookAuthorController.getBooksByAuthor)
+
 module.exports = router;
