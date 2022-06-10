@@ -14,6 +14,24 @@ mongoose.connect("mongodb+srv://functionup-cohort:G0Loxqc9wFEGyEeJ@cluster0.rzot
 .then( () => console.log("MongoDb is connected"))
 .catch ( err => console.log(err) )
 
+app.use( function ( req, res, next) {
+    let currentDate = new Date().toLocaleString()
+    console.log(currentDate, req.socket.remoteAddress, req.originalUrl);
+    next()
+ }
+)
+
+app.use('/', route);
+
+
+
+
+
+
+
+
+
+
 app.use (
     function (req, res, next) {
         console.log ("inside GLOBAL MW");
