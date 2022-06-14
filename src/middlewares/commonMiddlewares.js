@@ -1,3 +1,60 @@
+const express = require('express');
+
+const { default: mongoose } = require("mongoose")
+const productModel = require("../models/productModel")
+const userModel = require("../models/userModel")
+
+const mid5 = function ( req, res, next) {
+
+    let header = req.headers
+    if(!header["isfreeappuser"]){
+        // console.log(header.isfreeappuser)
+    res.send({msg: " The request is missing a mandatory header."})
+}else{
+    next()
+}
+}
+module.exports.mid5= mid5
+
+
+const mid6 = async function (req,res,next){
+    let isFreeAppUser = req.headers['isFreeAppUser']
+    if(isFreeAppUser){
+        let uId = await userModel.findById(req.body.userId)
+        let pId = await productModel.findById(req.body.productId)
+        if(uId == null){
+            res.send({msg : "Your UserId is invalid."})
+        }else{
+            if(pId == null){
+                res.send({msg :"Your ProductId is invalid."})
+            }else{
+                next()
+            }
+        }
+    }else{
+        res.send({msg : "The request is missing a mandatory header."})
+    }
+}
+module.exports.mid6 = mid6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const mid1= function ( req, res, next) {
     req.falana= "hi there. i am adding something new to the req object"

@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
 // const UserModel= require("../models/userModel.js")
-const UserController= require("../controllers/userController")
 const BookController= require("../controllers/bookController")
+
+const ProductController= require("../controllers/productController")
+const UserController= require("../controllers/userController")
+const OrderController= require("../controllers/orderController")
 const commonMW = require ("../middlewares/commonMiddlewares")
 
 router.get("/test-me", function (req, res) {
@@ -12,14 +15,14 @@ router.get("/test-me", function (req, res) {
 
 
 
-router.post("/createBook", BookController.createBook  )
+router.post("/createProduct",ProductController.createProduct)
+router.post("/CreateUser",commonMW.mid5, UserController.CreateUser)
+router.post("/createOrder",commonMW.mid6, OrderController.createOrder)
 
 
-
-
-router.post("/createUser", UserController.createUser)
+// router.post("/createUser", UserController.createUser)
 // router.get("/getUsersData", UserController.getUsersData)
-
+// router.post("/createBook", BookController.createBook  )
 
 // const mid1= function ( req, res, next) {
 //     console.log("Hi I am a middleware named Mid1")
