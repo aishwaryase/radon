@@ -1,8 +1,10 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
 
+
+// ================= [1] ==================================
 const createUser = async function (abcd, xyz) {
-  //You can name the req, res objects anything.
+  //You can name the req, res objects anything.  
   //but the first parameter is always the request 
   //the second parameter is always the response
   let data = abcd.body;
@@ -11,15 +13,16 @@ const createUser = async function (abcd, xyz) {
   xyz.send({ msg: savedData });
 };
 
-const loginUser = async function (req, res) {
+// ================= [2] ==================================
+const loginUser = async function (req, res) {   
   let userName = req.body.emailId;
-  let password = req.body.password;
+  let password = req.body.password; 
 
   let user = await userModel.findOne({ emailId: userName, password: password });
   if (!user)
     return res.send({
       status: false,
-      msg: "username or the password is not corerct",
+      msg: "username or the password is not correct",
     });
 
   // Once the login is successful, create the jwt token with sign function
@@ -31,7 +34,7 @@ const loginUser = async function (req, res) {
   let token = jwt.sign(
     {
       userId: user._id.toString(),
-      batch: "thorium",
+      batch: "radon",
       organisation: "FunctionUp",
     },
     "functionup-radon"
@@ -40,14 +43,15 @@ const loginUser = async function (req, res) {
   res.send({ status: true, token: token });
 };
 
+// ================= [3] ==================================
 const getUserData = async function (req, res) {
   let token = req.headers["x-Auth-token"];
   if (!token) token = req.headers["x-auth-token"];
 
-  //If no token is present in the request header return error
-  if (!token) return res.send({ status: false, msg: "token must be present" });
+//   //If no token is present in the request header return error
+//   if (!token) return res.send({ status: false, msg: "token must be present" });
 
-  console.log(token);
+//   console.log(token);
   
   // If a token is present then decode the token with verify function
   // verify takes two inputs:
@@ -66,12 +70,18 @@ const getUserData = async function (req, res) {
   res.send({ status: true, data: userDetails });
 };
 
+// ================= [4] ==================================
 const updateUser = async function (req, res) {
 // Do the same steps here:
 // Check if the token is present
 // Check if the token present is a valid token
 // Return a different error message in both these cases
+// let token = req.headers["x-Auth-token"];
+// if (!token) token = req.headers["x-auth-token"];
 
+// //If no token is present in the request header return error
+// if (!token) return res.send({ status: false, msg: "token must be present" });
+ 
   let userId = req.params.userId;
   let user = await userModel.findById(userId);
   //Return an error if no user with the given id exists in the db
@@ -80,11 +90,34 @@ const updateUser = async function (req, res) {
   }
 
   let userData = req.body;
-  let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
-  res.send({ status: updatedUser, data: updatedUser });
+  let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData,{new : true});
+  res.send({ status: true, data: updatedUser });
 };
 
+// ================= [5] ==================================
+ const deleteUser = async function(req, res){
+//     let token = req.headers["x-Auth-token"];
+// if (!token) token = req.headers["x-auth-token"];
+
+// //If no token is present in the request header return error
+// if (!token) return res.send({ status: false, msg: "token must be present" });
+let userId = req.params.userId;
+  let user = await userModel.findById(userId);
+  //Return an error if no user with the given id exists in the db
+  if (!user) {
+    return res.send("No such user exists");
+  }
+ 
+let deletedData = await userModel.findOneAndUpdate({_id:userId},{$set:{isDeleted:true}},{new:true})
+res.send({status : true, data: deletedData})
+
+}
+ 
+
+
 module.exports.createUser = createUser;
+module.exports.loginUser = loginUser;
 module.exports.getUserData = getUserData;
 module.exports.updateUser = updateUser;
-module.exports.loginUser = loginUser;
+module.exports.deleteUser = deleteUser;
+
