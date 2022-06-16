@@ -7,11 +7,22 @@ const createUser = async function (abcd, xyz) {
   //You can name the req, res objects anything.  
   //but the first parameter is always the request 
   //the second parameter is always the response
-  let data = abcd.body;
-  let savedData = await userModel.create(data);
-  console.log(abcd.newAtribute);
-  xyz.send({ msg: savedData });
+  try {
+
+    let data = abcd.body;
+    if(!data.mobile){
+      xyz.status(400).send({error: "mobile no. should be present"})
+    } else {
+    let savedData = await userModel.create(data);
+    xyz.status(201).send({ msg: savedData });
+    }
+}
+  catch(err){
+    xyz.status(500).send({msg :"Error", error:err.message})
+    console.log(err)
+} 
 };
+
 
 // ================= [2] ==================================
 const loginUser = async function (req, res) {   
